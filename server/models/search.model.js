@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 
 const searchSchema = new mongoose.Schema({
     userId: { 
@@ -13,7 +14,7 @@ const searchSchema = new mongoose.Schema({
     imageIds: 
         [String]
     , 
-    expiresAt: { type: Date, expires: '3d' }
+    expiresAt: { type: Date, expires: '2d' }
   });
 
 const Search = mongoose.model("Search", searchSchema);

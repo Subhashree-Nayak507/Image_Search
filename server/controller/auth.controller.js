@@ -1,6 +1,7 @@
 import { generateTokenAndSetCookie } from "../utils/Token.js";
 import User from "../models/user.model.js";
 import bcrypt from 'bcryptjs';
+import cloudinary from "../utils/cloudinary.js";
 
 export const signupController = async(req,res)=>{
     try{
@@ -42,10 +43,7 @@ export const signupController = async(req,res)=>{
 				fullName: newUser.fullName,
 				username: newUser.username,
 				email: newUser.email,
-				followers: newUser.followers,
-				following: newUser.following,
 				profileImg: newUser.profileImg,
-				coverImg: newUser.coverImg,
 			});
 		} else {
 			 return res.status(400).json({ message: "Invalid user data" });
@@ -85,10 +83,7 @@ export const loginController = async(req,res)=>{
 			fullName: user.fullName,
 			username: user.username,
 			email: user.email,
-			followers: user.followers,
-			following: user.following,
 			profileImg: user.profileImg,
-			coverImg: user.coverImg,
 		});
 
     }catch(error){
@@ -118,5 +113,71 @@ export const checkauth = async(req,res)=>{
     }catch(error){
         console.log("Error :",error);
          return res.status(500).json({ message:"Internal server Error"});
+    }
+};
+
+export const updateProfileDataController = async (req, res) => {
+    try {
+        const { fullName, email, username, currentPassword, newPassword } = req.body;
+        let user = await User.findById(req.user._id);
+        
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        if (currentPassword || newPassword) {
+            if (!currentPassword || !newPassword) {
+                return res.status(400).json({ 
+                    error: "Both current and new password are required" 
+                });
+            }
+            
+            const isMatch = await bcrypt.compare(currentPassword, user.password);
+            console.log("Password match result:", isMatch);
+            
+            if (!isMatch) {
+                return res.status(400).json({ error: "Current password is incorrect" });
+            }
+            
+            if (newPassword.length < 6) {
+                return res.status(400).json({ 
+                    error: "Password must be at least 6 characters" 
+                });
+            }
+            user.password = newPassword;
+        }
+
+        if (req.files && req.files.profileImg && req.files.profileImg[0]) {
+            try {
+                if (user.profileImg) {
+                    const publicId = user.profileImg.split("/").pop().split(".")[0];
+                    await cloudinary.uploader.destroy(publicId);
+                }
+                user.profileImg = req.files.profileImg[0].path;
+            } catch (error) {
+                console.error("Error handling profile image:", error);
+                return res.status(400).json({
+                    message: "Error uploading profile image",
+                    error: error.message
+                });
+            }
+        }
+
+        if (fullName) user.fullName = fullName.trim();
+        if (email) user.email = email.trim();
+        if (username) user.username = username.trim().toLowerCase();
+        
+        await user.save();
+        
+         user.password=null;
+        return res.status(200).json({
+            success: true,
+            user
+        });
+    } catch (error) {
+        console.error("Update profile error:", error);
+        return res.status(500).json({
+            error: "Internal server error"
+        });
     }
 };

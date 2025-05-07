@@ -10,6 +10,7 @@ export const searchImagesController = async (req, res) => {
             return res.status(400).json({ message: "Search query is required" });
         }
 
+        //checks MongoDB for a previous search by the same user with the same query.
         const cachedSearch = await Search.findOne({ 
             userId, 
             query 
@@ -21,18 +22,19 @@ export const searchImagesController = async (req, res) => {
                 previewURL: `https://pixabay.com/get/${id}-180.jpg`
             }));
 
-            return res.json({
+            return res.status(200).json({
                 source: 'cache',
                 images,
                 attribution: "Images from Pixabay"
             });
         }
 
+
         const response = await axios.get('https://pixabay.com/api/', {
             params: {
                 key: process.env.PIXABAY_KEY,
                 q: encodeURIComponent(query),
-                per_page: 20
+                per_page: 10
             }
         });
 
@@ -40,7 +42,7 @@ export const searchImagesController = async (req, res) => {
             throw new Error("Invalid response from Pixabay API");
         }
 
-        // Extract and transform data
+        // Extract and transform dataY
         const images = response.data.hits.map(img => ({
             id: img.id,
             webformatURL: img.webformatURL,
@@ -103,7 +105,7 @@ export const getSearchHistory = async (req, res) => {
             date: search.createdAt
         }));
 
-        res.json(history);
+        res.status(200).json(history);
 
     } catch (error) {
         console.log("Error fetching search history:", error);
