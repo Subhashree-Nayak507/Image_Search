@@ -24,16 +24,16 @@ export const searchImages = createAsyncThunk(
         }
       );
       
-      // Better handling of the response data
-      // Make sure to map properties consistently
+      if (!response.data || !response.data.images || !Array.isArray(response.data.images)) {
+        return rejectWithValue({ message: "Invalid response format from server" });
+      }
+      
       const formattedImages = response.data.images.map(img => ({
         id: img.id,
-        // Ensure we have multiple URL options for our getImageUrl function
         url: img.webformatURL,
         webformatURL: img.webformatURL,
         thumbnailUrl: img.previewURL,
         previewURL: img.previewURL,
-        // Add metadata fields
         title: img.tags && img.tags.length > 0 ? img.tags[0] : 'Image',
         description: img.tags && img.tags.length > 1 ? img.tags.slice(1).join(', ') : 'No description available',
         alt: img.tags ? img.tags.join(', ') : 'Image search result',
@@ -44,33 +44,13 @@ export const searchImages = createAsyncThunk(
       
       return {
         images: formattedImages,
-        attribution: response.data.attribution,
-        source: response.data.source
+        attribution: response.data.attribution || "",
+        source: response.data.source || ""
       };
     } catch (error) {
       console.error("Error searching images:", error);
       return rejectWithValue(
-        error.response?.data || { message: error.message || "Failed to search images" }
-      );
-    }
-  }
-);
-
-export const fetchSearchHistory = createAsyncThunk(
-  "search/history",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(
-        `${baseURL}/search/history`,
-        {
-          withCredentials: true,
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching search history:", error);
-      return rejectWithValue(
-        error.response?.data || { message: error.message || "Failed to fetch search history" }
+        error.response?.data?.message || error.message || "Failed to search images"
       );
     }
   }
@@ -102,21 +82,8 @@ const searchSlice = createSlice({
       })
       .addCase(searchImages.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload || { message: "Failed to search images" };
+        state.error = action.payload || "Failed to search images";
       })
-      // Fetch Search History
-      .addCase(fetchSearchHistory.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(fetchSearchHistory.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.searchHistory = action.payload;
-      })
-      .addCase(fetchSearchHistory.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload || { message: "Failed to fetch search history" };
-      });
   },
 });
 
