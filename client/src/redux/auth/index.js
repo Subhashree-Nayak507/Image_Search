@@ -6,12 +6,10 @@ const initialState = {
   isLoading: false,
   user: null,
   error: null,
-  authChecked: false, // Add a new flag to track if auth check has completed
 };
 
 const baseURL = process.env.VITE_API_BASE_URL || "http://localhost:4000/api/v1";
 
-// Create an axios instance with defaults
 const api = axios.create({
   baseURL,
   withCredentials: true,
@@ -30,10 +28,7 @@ export const registerUser = createAsyncThunk(
         fullName,
         password,
       });
-      
-      if (response.status !== 201) {
-        throw new Error(response.data.error || "Failed to create account");
-      }
+       console.log("response signup",response.data)
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || { message: error.message });
@@ -46,6 +41,7 @@ export const loginUser = createAsyncThunk(
   async (formData, { rejectWithValue }) => {
     try {
       const response = await api.post("/auth/login", formData);
+       console.log("response login",response.data)
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || { message: error.message });
@@ -70,12 +66,9 @@ export const checkAuth = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get("/auth/check-auth");
+       console.log("response checkauth",response.data);
       return response.data;
     } catch (error) {
-      // For auth check, we treat 401/403 as expected outcomes, not errors
-      if (error.response?.status === 401 || error.response?.status === 403) {
-        return { success: false };
-      }
       return rejectWithValue(error.response?.data || { message: error.message });
     }
   }
@@ -100,10 +93,10 @@ const authSlice = createSlice({
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(registerUser.fulfilled, (state) => {
+      .addCase(registerUser.fulfilled, (state,action) => {
         state.isLoading = false;
-        state.user = null;
-        state.isAuthenticated = false;
+        state.user =action.payload;
+        state.isAuthenticated = true;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -118,8 +111,8 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload.success ? action.payload.user : null;
-        state.isAuthenticated = action.payload.success;
+        state.user = action.payload;
+        state.isAuthenticated = true;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -140,27 +133,22 @@ const authSlice = createSlice({
       .addCase(logoutUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        // Even if logout fails, we clear auth state on client
         state.user = null;
         state.isAuthenticated = false;
       })
       
-      // Check auth cases
       .addCase(checkAuth.pending, (state) => {
         state.isLoading = true;
-        state.authChecked = false;
       })
       .addCase(checkAuth.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload.success ? action.payload.user : null;
-        state.isAuthenticated = action.payload.success;
-        state.authChecked = true; // Mark auth check as completed
+        state.user = action.payload.user
+        state.isAuthenticated = true;
       })
       .addCase(checkAuth.rejected, (state) => {
         state.isLoading = false;
         state.user = null;
         state.isAuthenticated = false;
-        state.authChecked = true; // Mark auth check as completed even if it failed
       });
   },
 });

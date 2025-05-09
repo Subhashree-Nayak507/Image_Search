@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { searchImages, fetchSearchHistory } from '../redux/search/index';
 import { logoutUser } from '../redux/auth/index';
@@ -15,18 +15,7 @@ const SearchPage = () => {
   const navigate = useNavigate();
   const { images, isLoading, error } = useSelector((state) => state.search);
   const { user } = useSelector((state) => state.auth);
-  console.log("user",user);
 
-  // Debug logging
-  useEffect(() => {
-    console.log('Images from Redux:', images);
-  }, [images]);
-
-  useEffect(() => {
-    dispatch(fetchSearchHistory());
-  }, [dispatch]);
-
-  // Handle modal close on Escape key
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
@@ -82,7 +71,7 @@ const SearchPage = () => {
     if (image.previewURL) return image.previewURL;
     if (image.thumbnailUrl) return image.thumbnailUrl;
     if (image.id) return `https://pixabay.com/get/${image.id}-640.jpg`;
-    return '/api/placeholder/400/320'; // Uncommented fallback
+    return '/api/placeholder/400/320'; 
   };
 
   return (
@@ -147,7 +136,7 @@ const SearchPage = () => {
             className="bg-white/10 backdrop-blur-md border border-white/10 rounded-xl p-6 w-full max-w-md mx-4 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 id="modal-title" className="text-xl font-bold text-white mb-4">
+            <h2 id="modal-title" className="text-xl font-bold text-white mb-4 flex justify-center">
               User Profile
             </h2>
             <div className="space-y-4">
@@ -185,7 +174,7 @@ const SearchPage = () => {
                 />
               </div>
             </div>
-            <div className="mt-6 flex justify-end">
+            <div className="mt-6 flex justify-center">
               <Button
                 onClick={toggleModal}
                 className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white px-4 py-2 rounded-lg"
@@ -213,7 +202,7 @@ const SearchPage = () => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Search for stunning images..."
+              placeholder="Search for images..."
               className="w-full pl-10 pr-20 py-6 rounded-xl border-0 bg-white/20 backdrop-blur-sm text-white placeholder-gray-300 focus:ring-2 focus:ring-white focus:bg-white/30 transition-all duration-200"
             />
             <Button
@@ -292,7 +281,6 @@ const SearchPage = () => {
                     <Image className="h-8 w-8 text-indigo-200" />
                   </div>
                   <h2 className="text-xl font-medium text-white">No images found</h2>
-                  <p className="text-gray-300 mt-2">Try another search term</p>
                 </div>
               )}
             </>

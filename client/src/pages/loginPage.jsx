@@ -26,8 +26,7 @@ const LoginPage = () => {
     try {
       await dispatch(loginUser(formData)).unwrap();
       toast.success("Logged in successfully");
-      // After successful login
-naviagte( "/search");
+      naviagte( "/search");
     } catch (err) {
       toast.error(err.message || "Something went wrong!");
     }
@@ -41,8 +40,8 @@ naviagte( "/search");
     <div className="min-h-screen bg-gradient-to-br from-blue-900 via-indigo-800 to-purple-900 flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12">
       <Card className="w-full max-w-md sm:max-w-lg md:max-w-lg lg:max-w-xl bg-white/10 backdrop-blur-xl border border-blue-500/20 shadow-2xl animate-fade-in">
         <CardHeader>
-          <CardTitle className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-extrabold text-white text-center tracking-tight">
-            Log In
+          <CardTitle className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold text-white text-center tracking-tight">
+            Log In in  ImageSearch Pro
           </CardTitle>
         </CardHeader>
         <CardContent>

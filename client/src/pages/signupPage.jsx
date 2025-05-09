@@ -14,7 +14,7 @@ const SignUpPage = () => {
   const [formData, setFormData] = useState({
     email: "",
     username: "",
-    Fullname: "",
+    fullName: "",
     password: "",
   });
   const naviagte= useNavigate();
@@ -27,7 +27,7 @@ const SignUpPage = () => {
     try {
       await dispatch(registerUser(formData)).unwrap();
       toast.success("Account created successfully");
-      naviagte("/");
+      naviagte("/search");
     } catch (err) {
       toast.error(err.message || "Something went wrong!");
     }
@@ -43,7 +43,7 @@ const SignUpPage = () => {
         <Card className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg bg-white/10 backdrop-blur-xl border border-blue-500/20 shadow-2xl overflow-hidden">
           <CardHeader className="pb-3 sm:pb-4 md:pb-6">
             <CardTitle className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-purple-200 text-center tracking-tight">
-              Sign Up in Text-Image Converter
+              Sign Up in  ImageSearch Pro
             </CardTitle>
           </CardHeader>
           <CardContent className="max-h-[70vh] overflow-y-auto scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-blue-900/30 pr-2 sm:pr-3">
@@ -99,7 +99,7 @@ const SignUpPage = () => {
                       type="text"
                       name="fullName"
                       placeholder="Full name"
-                      value={formData.FullName}
+                      value={formData.fullName}
                       onChange={handleInputChange}
                       className="pl-10 h-9 sm:h-10 text-sm sm:text-base bg-white/15 text-white border-blue-500/30 focus:border-blue-400 placeholder:text-blue-300/60"
                       required
