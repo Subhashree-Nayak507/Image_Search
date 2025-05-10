@@ -15,7 +15,7 @@ const __dirname = path.resolve();
 // Enhanced CORS configuration
 const corsOptions = {
   origin: process.env.NODE_ENV === "production"
-    ? ['https://image-search-ebj9.onrender.com']
+    ? ['https://image-search-abwm.onrender.com']
     : ['http://localhost:5173', 'http://localhost:4000'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -31,10 +31,6 @@ app.use(cookieParser());
 app.use('/api/v1/search', ImageRouter);
 app.use('/api/v1/auth', authRouter);
 
-// Health check endpoint
-app.get('/api/v1/health', (req, res) => {
-  res.status(200).json({ status: 'healthy' });
-});
 
 // Production configuration
 if (process.env.NODE_ENV === "production") {
