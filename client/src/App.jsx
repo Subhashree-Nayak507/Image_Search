@@ -7,7 +7,6 @@ import SignUpPage from "./pages/signupPage";
 import LoginPage from "./pages/loginPage";
 import SearchPage from "./pages/searchPage";
 
-
 function App() {
   const dispatch = useDispatch();
    const location = useLocation();
