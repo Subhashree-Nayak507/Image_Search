@@ -40,8 +40,8 @@ const LoginPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-900 via-indigo-800 to-purple-900 flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12">
       <Card className="w-full max-w-md sm:max-w-lg md:max-w-lg lg:max-w-xl bg-white/10 backdrop-blur-xl border border-blue-500/20 shadow-2xl animate-fade-in">
         <CardHeader>
-          <CardTitle className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold text-white text-center tracking-tight">
-            Log In in  ImageSearch Pro
+          <CardTitle className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-purple-200 text-center tracking-tight">
+            Log In 
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -128,13 +128,14 @@ const LoginPage = () => {
           </form>
 
           {/* Sign Up Link */}
-          <div className="mt-6 text-center">
-            <p className="text-blue-200 text-sm md:text-base">
-              Don't have an account?
-              <Link to="/signup">Sign Up</Link>
-            </p>
-    
-          </div>
+           <div className="mt-4 sm:mt-5 md:mt-6 text-center">
+              <p className="text-blue-200 text-xs sm:text-sm">
+                Don't have an account?{" "}
+                <Link to="/signup" className="text-blue-600 hover:text-blue-300 underline font-medium">
+                  Sign up
+                </Link>
+              </p>
+            </div>
         </CardContent>
       </Card>
     </div>

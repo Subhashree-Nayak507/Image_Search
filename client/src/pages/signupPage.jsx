@@ -42,8 +42,8 @@ const SignUpPage = () => {
       <div className="w-full flex justify-center items-center py-4 sm:py-6 md:py-8">
         <Card className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg bg-white/10 backdrop-blur-xl border border-blue-500/20 shadow-2xl overflow-hidden">
           <CardHeader className="pb-3 sm:pb-4 md:pb-6">
-            <CardTitle className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-purple-200 text-center tracking-tight">
-              Sign Up in  ImageSearch Pro
+            <CardTitle className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-purple-200 text-center tracking-tight">
+              Sign Up 
             </CardTitle>
           </CardHeader>
           <CardContent className="max-h-[70vh] overflow-y-auto scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-blue-900/30 pr-2 sm:pr-3">
@@ -156,7 +156,7 @@ const SignUpPage = () => {
               <p className="text-blue-200 text-xs sm:text-sm">
                 Already have an account?{" "}
                 <Link to="/login" className="text-blue-600 hover:text-blue-300 underline font-medium">
-                  Sign In
+                  Log In
                 </Link>
               </p>
             </div>

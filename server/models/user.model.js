@@ -22,16 +22,7 @@ const userSchema = new mongoose.Schema(
 			required: true,
 			unique: true,
 		},
-        profileImg:{
-            type:String,
-            default:""
-        },
-		searchHistory: [
-			{ 
-			  type: mongoose.Schema.Types.ObjectId, 
-			  ref: 'Search'
-			 }
-		]
+       
 	},
 	{ timestamps: true }
 );
