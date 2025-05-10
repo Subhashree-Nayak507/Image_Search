@@ -33,6 +33,15 @@ A full-stack **MERN** application that implements **JWT authentication** and int
 - Query is sent to a backend route, which calls the **Pixabay API**
 - API response is parsed and displayed as a gallery of images
 
+## 🧩 UI/UX Design
+
+This app uses **shadcn/ui + Tailwind CSS** to deliver:
+
+- Minimalist, accessible components
+- Responsive grid layout for the image gallery
+- Consistent theme and modern design
+- Customizable cards, buttons, and inputs with shadcn/ui
+
 ## Setup
 
 ### 1. Clone the Repository
