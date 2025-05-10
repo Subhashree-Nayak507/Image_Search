@@ -24,7 +24,7 @@ A full-stack **MERN** application that implements **JWT authentication** and int
 1. User registers with email and password
 2. Password is hashed using **bcrypt**
 3. Upon login, server generates a **JWT token**
-4. Token is stored in client-side **localStorage** or **cookies**
+4. Token is stored in client-side  **cookies**
 5. Protected routes verify JWT token before granting access
 
 ## 📷 Image Search Flow
