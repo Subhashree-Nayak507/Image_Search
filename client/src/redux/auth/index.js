@@ -8,7 +8,8 @@ const initialState = {
   error: null,
 };
 
-const baseURL =  "http://localhost:4000/api/v1";
+//const baseURL =  "http://localhost:4000/api/v1";
+const baseURL = "https://image-search-abwm.onrender.com";
 
 const api = axios.create({
   baseURL,

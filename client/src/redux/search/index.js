@@ -10,7 +10,8 @@ const initialState = {
   source: "",
 };
 
-const baseURL =  "http://localhost:4000/api/v1";
+//const baseURL =  "http://localhost:4000/api/v1";
+const baseURL = "https://image-search-abwm.onrender.com";
 
 export const searchImages = createAsyncThunk(
   "search/images",
